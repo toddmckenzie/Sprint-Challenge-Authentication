@@ -1,7 +1,9 @@
 const axios = require('axios');
 const db = require('../database/dbConfig.js');
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { authenticate } = require('../auth/authenticate');
+
 
 module.exports = server => {
   server.post('/api/register', register);
@@ -71,7 +73,9 @@ function generateToken(user){
   const options = {
       expiresIn: '2h',
   }
-  const secret = 'Just some secret to keep';
+  const jwtKey =
+  process.env.JWT_SECRET ||
+  'add a .env file to root of project with the JWT_SECRET variable';
 
-  return jwt.sign(payload, secret, options)
+  return jwt.sign(payload, jwtKey, options)
 }
